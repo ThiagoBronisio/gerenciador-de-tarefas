@@ -1,5 +1,15 @@
-export default function ConsultarTarefa(){
-    return(
-        <h1>Aqui é a página de consultar tarefas</h1>
+import Form from "../../components/ConsultarTarefa/Form";
+import StatusTarefa from "../../components/ConsultarTarefa/StatusTarefa";
+import { ContainerConsultarPage } from "../../styles";
+
+function ConsultarTarefa() {
+
+    return (
+        <ContainerConsultarPage>
+            <StatusTarefa />
+            <Form />
+        </ContainerConsultarPage>
     )
 }
+
+export default ConsultarTarefa
