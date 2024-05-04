@@ -2,6 +2,7 @@ import React from "react"
 import { ContainerHomePage, ContainerHomePageTitle, ContainerHomePageList, ContainerHomePageButton } from "../../styles"
 import { GoChecklist } from "react-icons/go";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
+import { Link } from "react-router-dom"
 
 function Home() {
     return (
@@ -24,7 +25,7 @@ function Home() {
             </ContainerHomePageList>
 
             <ContainerHomePageButton>
-                <button>Comece grátis</button>
+                <Link to="/consultar-tarefas"><button>Comece grátis</button></Link>
             </ContainerHomePageButton>
 
         </ContainerHomePage>
