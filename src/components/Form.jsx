@@ -1,26 +1,34 @@
-import { Separator, ContainerFormConsultar, ContainerButtonConsultar } from "../../styles"
+import { Separator, ContainerFormConsultar, ContainerButtonCadastrar, ContainerButtonConsultar } from "../styles"
 import { useState } from "react";
-import Table from "./Table";
-import { getTarefas } from "../../services/tarefas-services";
+import { getTarefas } from "../services/tarefas-services";
+import CustomModal from "./CustomModal";
 
 
-function Form() {
+function Form({ setTaskCount, setTask, setTaskStatus, setValorInputInicio, setValorInputFim}) {
 
     const [dataInicio, setDataInicio] = useState('');
     const [dataFim, setDataFim] = useState('');
-    const [tarefas, setTarefas] = useState(['']);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setValorInputInicio(dataInicio)
+        setValorInputFim(dataFim)
 
         const response = await getTarefas(dataInicio, dataFim);
-        if(response) {
-            setTarefas(response)
+        if (response) {
+            setTask(response)
+            setTaskCount(response.length)
+            const statusMap = response.map(tarefa => tarefa.status)
+            setTaskStatus(statusMap)
+
         }
-        console.log(dataInicio)
-        console.log(dataFim)
     }
 
+    const [modalAberto, setModalAberto] = useState(false);
+
+    const abrirModal = () => {
+        setModalAberto(true);
+    }
 
     return (
         <>
@@ -37,7 +45,6 @@ function Form() {
                                 </input>
                             </label>
 
-
                             <label>Data Final :
                                 <input type="datetime-local"
                                     value={dataFim}
@@ -48,15 +55,17 @@ function Form() {
                         </div>
                     </div>
 
+                    <ContainerButtonCadastrar>
+                        <button type="button" onClick={abrirModal}> Cadastrar</button>
+                    </ContainerButtonCadastrar>
+                    <CustomModal isOpen={modalAberto} onClose={() => setModalAberto(false)} />
+
                     <ContainerButtonConsultar>
                         <button type="submit">Consultar</button>
                     </ContainerButtonConsultar>
+
                 </form>
-                <Separator />
             </ContainerFormConsultar>
-            {tarefas.length > 1 && (
-            <Table tarefas={tarefas} />
-            )}
         </>
 
     )

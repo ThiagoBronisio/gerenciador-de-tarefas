@@ -5,6 +5,7 @@ const grenn100 = '#434D36';
 const gray100 = '#F5F5F5';
 const gray200 = '#333333';
 
+
 export const Separator = styled.hr`
     border:1px solid #dcdcdc;
     margin-bottom: 5px;
@@ -84,7 +85,6 @@ export const ContainerHomePageTitle = styled.div`
 
 
     h2 {
-        font-family: Arial, Helvetica, sans-serif;
         color: ${grenn100};
         margin-top: 10px;
         font-size: 18px;
@@ -114,7 +114,7 @@ export const ContainerHomePageList = styled.div`
             align-items: center;
             margin-top: 20px;
             font-size: 20px;
-            font-family: Arial, Helvetica, sans-serif;
+            ;
             color: ${grenn100};
 
             svg {
@@ -142,7 +142,7 @@ export const ContainerHomePageButton = styled.div`
         border: none;
         border-radius: 25px;
         font-weight: bold;
-        font-family: Arial, Helvetica, sans-serif;
+        ;
         cursor: pointer;
         font-size: 18px;
         color: #FFF;
@@ -160,7 +160,7 @@ export const ContainerStatusTarefa = styled.div`
     align-items: center;
     justify-content: center;
     padding: 0 140px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     width: 100%;
 
     @media (max-width: 1024px){
@@ -176,13 +176,13 @@ export const ContainerStatusTarefa = styled.div`
 export const StatusSucess = styled.div`
     display: flex;
     justify-content: center;
-    border: 2px solid rgba(0, 255, 0, 0.2);
+    border: 2px solid rgba(0, 200, 0, 0.2);
     border-radius: 4px;
     width: 100%;
     max-width: 320px;
-    height: 140px;
+    height: 100px;
     margin-right: 16px;
-    background-color: rgba(0, 255, 0, 0.1);
+    background-color: rgba(0, 200, 0, 0.2);
 
     @media (max-width: 767px){
         max-width: 100%;
@@ -198,8 +198,7 @@ export const StatusSucess = styled.div`
        justify-content: center;
 
         span {
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: bold;
+            font-weight: 400;
             font-size: 30px;
 
             @media (max-width: 767px){
@@ -208,9 +207,8 @@ export const StatusSucess = styled.div`
         }
 
         p {
-            margin-top: 5px;
+            margin: 5px 0;
             font-size: 18px;
-            font-family: Arial, Helvetica, sans-serif;
 
             @media (max-width: 767px){
                 font-size: 16px;
@@ -222,13 +220,13 @@ export const StatusSucess = styled.div`
 export const StatusDanger = styled.div`
     display: flex;
     justify-content: center;
-    border: 2px solid  rgba(255, 0, 0, 0.2);
+    border: 2px solid  rgba(140, 0, 0, 0.2);
     border-radius: 4px;
     width: 100%;
     max-width: 320px;
-    height: 140px;
+    height: 100px;
     margin-right: 16px;
-    background-color: rgba(255, 0, 0, 0.1);
+    background-color: rgba(140, 0, 0, 0.2);
 
     @media (max-width: 767px){
         max-width: 100%;
@@ -244,8 +242,7 @@ export const StatusDanger = styled.div`
        justify-content: center;
 
         span {
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: bold;
+        font-weight: 400;
         font-size: 30px;
 
         @media (max-width: 767px){
@@ -254,9 +251,8 @@ export const StatusDanger = styled.div`
         }
 
         p {
-            margin-top: 5px;
+            margin: 5px 0;
             font-size: 18px;
-            font-family: Arial, Helvetica, sans-serif;
 
             @media (max-width: 767px){
                 font-size: 16px;
@@ -265,14 +261,14 @@ export const StatusDanger = styled.div`
         }
     }
 `
-export const StatusSecondary = styled.div`
+export const StatusPrimary = styled.div`
     display: flex;
     justify-content: center;
-    border: 2px solid rgba(0, 0, 255, 0.2);
+    border: 2px solid rgba(0, 0, 255, 0.1);
     border-radius: 4px;
     width: 100%;
     max-width: 320px;
-    height: 140px;
+    height: 100px;
     background-color: rgba(0, 0, 255, 0.1);
 
     @media (max-width: 767px){
@@ -289,8 +285,7 @@ export const StatusSecondary = styled.div`
        justify-content: center;
 
         span {
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: bold;
+        font-weight: 400;
         font-size: 30px;
 
         @media (max-width: 767px){
@@ -299,9 +294,9 @@ export const StatusSecondary = styled.div`
         }
 
         p {
-            margin-top: 5px;
+            margin: 5px 0;
             font-size: 18px;
-            font-family: Arial, Helvetica, sans-serif;
+            ;
 
             @media (max-width: 767px){
                 font-size: 16px;
@@ -355,7 +350,7 @@ export const ContainerFormConsultar = styled.div`
                 label {
                 font-size: 14px;
                 font-weight: bold;
-                font-family: Arial, Helvetica, sans-serif;
+                ;
                 margin-right: 10px;
                 margin-bottom: 0px !important;
 
@@ -395,10 +390,49 @@ export const ContainerFormConsultar = styled.div`
         }
     }
 `
+export const ContainerButtonCadastrar = styled.div`
+    display: flex;
+    align-items: end;
+    max-width: 200px ;
+    margin-right: 10px;
+
+    @media (max-width: 1023px){
+        max-width: 100%;
+        justify-content: center;
+        margin: 0 0 8px 0 !important;
+    }
+    @media (max-width: 767px){
+        margin-right: 0;
+    }
+
+    button {
+        width: 100%;
+        height: 45px;
+        border: 1px solid #198754;
+        background-color: #198754;
+        color: #FFF;
+        font-weight: 400;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+
+        @media (max-width: 1023px){
+            width: 300px;
+            height: 38px;
+        }
+    }
+    :hover {
+            background-color: rgba(0, 150, 0, 0.9);
+            border: 1px solid rgba(0, 150, 0, 0.9);
+            transition: 0.7s;
+        }
+`
 export const ContainerButtonConsultar = styled.div`
     display: flex;
     align-items: end;
-    max-width: 300px ;
+    max-width: 200px ;
 
     @media (max-width: 1023px){
         max-width: 100%;
@@ -412,14 +446,16 @@ export const ContainerButtonConsultar = styled.div`
     button {
         width: 100%;
         height: 45px;
-        border: 1px solid rgba(0, 0, 255, 0.5);;
-        background-color: rgba(0, 0, 255, 0.5);
+        border: 1px solid rgba(0, 0, 255, 0.7);
+        background-color: rgba(0, 0, 255, 0.7);
         color: #FFF;
         font-weight: bold;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
+        
+        font-weight: 400;
 
         @media (max-width: 1023px){
             width: 300px;
@@ -428,9 +464,134 @@ export const ContainerButtonConsultar = styled.div`
     }
 
     :hover {
-            background-color: rgba(0, 0, 255, 0.4);
+            border: 1px solid rgba(0, 0, 255, 0.6);
+            background-color: rgba(0, 0, 255, 0.6);
             transition: 0.7s;
         }
+`
+export const ContainerPagination = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    button {
+        padding: 4px 12px;
+        border: 1px solid #DDDDDD;
+        background-color: #fff;
+        border-radius: 1px;
+        color: inherit;
+
+        &:hover {
+            background-color: #f4f4f4;
+            border-color: #f4f4f4;
+        }
+    }
+    .active {
+        background-color: #f4f4f4;
+        }
+
+    select {
+        padding: 2px 10px;
+        border: 1px solid #DDDDDD;
+    }
+`
+export const ContainerTitleModal = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    svg {
+        font-size: 25px;
+        color: #666666;
+        margin-right: 5px;
+    }
+`
+export const TitleModal = styled.h2`
+    margin: 5px 0 0 0;
+    font-size: 30px;
+    font-family: "Nunito Sans", sans-serif;
+    color: #666666;
+`
+export const SeparatorModal = styled.hr`
+    border:1px solid #dcdcdc;
+    margin: 0px 0 16px 0;
+    box-sizing:border-box;
+    width:100%;
+`
+export const ContainerInputModal = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+
+    label {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        margin-bottom: 5px;
+    }
+
+    input {
+        border: 1px solid #ced4da;
+        border-radius: 3px;
+        height: 40px;
+        font-weight: 400;
+        line-height: 1.5;
+        background-color: #fff;
+        padding: 15px 12px 15px 12px;
+    }
+
+    span {
+        color: red;
+        font-size: 16px;
+    }
+`
+export const ContainerSelectedModal = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+
+    label {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        margin-bottom: 5px;
+    }
+
+    select {
+        border: 1px solid #ced4da;
+        border-radius: 3px;
+        height: 40px;
+        padding: 0 10px;
+    }
+
+    span {
+        color: red;
+        font-size: 16px;
+    }
+`
+export const ButtonModal = styled.button`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 42px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 255, 0.7);
+    background-color: rgba(0, 0, 255, 0.7);
+    color: #FFF;
+    font-weight: bold;
+    margin-bottom: 10px;
+    
+
+    &:hover {
+        border: 1px solid rgba(0, 0, 255, 0.6);
+        background-color: rgba(0, 0, 255, 0.6);
+        transition: 0.7s;
+    }
 `
 export const ContainerErrorPage = styled.div`
     padding: 0 30px;
@@ -454,7 +615,7 @@ export const ContainerErrorPageMsg = styled.div`
 
     h1 {
         margin: 15px 0;
-        font-family: Arial, Helvetica, sans-serif;
+        ;
 
         @media (max-width: 767px) {
             font-size: 20px;
@@ -467,7 +628,7 @@ export const ContainerErrorPageMsg = styled.div`
 
     p {
         text-align: center;
-        font-family: Arial, Helvetica, sans-serif;
+        ;
         line-height: 18px;
         font-size: 18px;
 
@@ -485,7 +646,7 @@ export const ButtonErrorPage = styled.button`
     border: none;
     border-radius: 20px;
     font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
+    ;
     cursor: pointer;
     font-size: 18px;
 

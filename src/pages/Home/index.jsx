@@ -25,7 +25,7 @@ function Home() {
             </ContainerHomePageList>
 
             <ContainerHomePageButton>
-                <Link to="/consultar-tarefas"><button>Comece grátis</button></Link>
+                <Link to="/tarefas"><button>Comece grátis</button></Link>
             </ContainerHomePageButton>
 
         </ContainerHomePage>
