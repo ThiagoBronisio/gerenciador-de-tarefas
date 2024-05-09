@@ -183,6 +183,7 @@ export const StatusSucess = styled.div`
     height: 100px;
     margin-right: 16px;
     background-color: rgba(0, 200, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     @media (max-width: 767px){
         max-width: 100%;
@@ -217,16 +218,17 @@ export const StatusSucess = styled.div`
         }
     }
 `
-export const StatusDanger = styled.div`
+export const StatusSecondary = styled.div`
     display: flex;
     justify-content: center;
-    border: 2px solid  rgba(140, 0, 0, 0.2);
+    border: 2px solidrgba(169, 169, 169, 0.5);;
     border-radius: 4px;
     width: 100%;
     max-width: 320px;
     height: 100px;
     margin-right: 16px;
-    background-color: rgba(140, 0, 0, 0.2);
+    background-color: rgba(169, 169, 169, 0.5);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     @media (max-width: 767px){
         max-width: 100%;
@@ -270,6 +272,7 @@ export const StatusPrimary = styled.div`
     max-width: 320px;
     height: 100px;
     background-color: rgba(0, 0, 255, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     @media (max-width: 767px){
         max-width: 100%;

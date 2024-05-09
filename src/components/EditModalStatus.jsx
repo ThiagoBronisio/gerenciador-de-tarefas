@@ -129,7 +129,7 @@ export default function EditModalStatus({ isOpen, onClose, urlId }) {
                             name="status">
                             <option value="">Selecione...</option>
                             <option value="1">Tarefa ativa</option>
-                            <option value="2">Tarefa inativa</option>
+                            <option value="2">Tarefa finalizada</option>
                         </Field>
                         <ErrorMessage name="status" component="span" />
                     </ContainerSelectedModal>

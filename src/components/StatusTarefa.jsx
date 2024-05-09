@@ -1,4 +1,4 @@
-import { ContainerStatusTarefa, StatusDanger, StatusPrimary, StatusSucess } from "../styles"
+import { ContainerStatusTarefa, StatusSecondary, StatusPrimary, StatusSucess } from "../styles"
 import CustomModal from "./CadastroModal";
 
 
@@ -21,21 +21,21 @@ function StatusTarefa({ taskCount, taskStatus }) {
             <StatusSucess>
                 <div>
                     <span>{countActiveTasks()}</span>
-                    <p>Tarefa ativa</p>
+                    <p>Tarefas ativas</p>
                 </div>
             </StatusSucess>
 
-            <StatusDanger>
+            <StatusSecondary>
                 <div>
                     <span>{countInactiveTasks()}</span>
-                    <p>Tarefa inativa</p>
+                    <p>Tarefas finalizadas</p>
                 </div>
-            </StatusDanger>
+            </StatusSecondary>
 
             <StatusPrimary>
                 <div>
                     <span>{taskCount}</span>
-                    <p>Tarefa total</p>
+                    <p>Total de tarefas</p>
                 </div>
             </StatusPrimary>
 
