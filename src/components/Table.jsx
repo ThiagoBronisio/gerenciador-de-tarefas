@@ -33,17 +33,17 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
 
   const isActive = {
     1: 'Ativo',
-    2: 'Inativo'
+    2: 'Finalizado'
   };
 
   function getClassForPriority(prioridade) {
     switch (prioridade) {
       case 1:
-        return 'text-danger fw-bold';
+        return 'text-danger';
       case 2:
-        return 'text-warning fw-bold';
+        return 'text-warning';
       case 3:
-        return 'text-primary fw-bold';
+        return 'text-primary';
       default:
         return '';
     }
@@ -52,9 +52,9 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
   function getClassForStatus(status) {
     switch (status) {
       case 1:
-        return 'text-success fw-bold';
+        return 'text-success';
       case 2:
-        return 'text-darnger fw-bold';
+        return 'text-secondary';
       default:
         return '';
     }
@@ -131,12 +131,12 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
         <table className="table table-sm table-striped table-bordered">
           <thead>
             <tr>
-              <th style={{ color: "#676a6c" }}>Nome da Tarefa</th>
-              <th style={{ color: "#676a6c" }}>Status</th>
-              <th style={{ color: "#676a6c" }}>Data e Hora</th>
-              <th style={{ color: "#676a6c" }}>Prioridade</th>
-              <th style={{ color: "#676a6c" }}>Descrição</th>
-              <th style={{ color: "#676a6c" }}></th>
+              <th className="fw-normal" style={{ color: "#676a6c"}}>Nome da Tarefa</th>
+              <th className="fw-normal" style={{ color: "#676a6c" }}>Status</th>
+              <th className="fw-normal" style={{ color: "#676a6c" }}>Data e Hora</th>
+              <th className="fw-normal" style={{ color: "#676a6c" }}>Prioridade</th>
+              <th className="fw-normal" style={{ color: "#676a6c" }}>Descrição</th>
+              <th className="fw-normal" style={{ color: "#676a6c" }}></th>
             </tr>
           </thead>
 
@@ -146,7 +146,7 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
                 <td style={{ color: "#676a6c" }} className='p-2'>
                   {task.nome}
                 </td>
-                <td style={{ color: "#676a6c" }} className={`p-2 ${getClassForStatus(task.status)}`}>
+                <td style={{ color: "#676a6c"}} className={`p-2 ${getClassForStatus(task.status)}`}>
                   {descricaoStatus(task.status)}
                 </td>
                 <td style={{ color: "#676a6c" }} className='p-2'>
