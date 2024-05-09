@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import EditModal from "./EditModal"
+import EditModalStatus from "./EditModalStatus";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin2Fill } from "react-icons/ri";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import Pagination from "./Pagination"
 import PaginationSelector from "./PaginationSelector";
 import { ContainerPagination } from "../styles";
@@ -13,6 +16,9 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
 
   const [currentPage, setCurrentPage] = useState(0)
   const [itensPerPage, setItensPerPage] = useState(10);
+  const [modalAberto, setModalAberto] = useState(false);
+  const [modalStatusOpen, setModalStatusOpen] = useState(false);
+  const [urlId, setUrlId] = useState(null);
 
   const pages = Math.ceil(task.length / itensPerPage);
   const startIndex = currentPage * itensPerPage;
@@ -76,7 +82,7 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
   }
 
   useEffect(() => {
-    if(task.length > 0){
+    if (task.length > 0) {
       fetchTarefa()
     }
   }, [task])
@@ -89,7 +95,8 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
       showCancelButton: true,
       confirmButtonColor: "#0000FFB3",
       cancelButtonColor: "#dc3545",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Sim, excluir!",
+      cancelButtonText: "Cancelar"
     }).then(result => {
       if (result.isConfirmed) {
         deleteTarefa(id)
@@ -107,6 +114,16 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
         }
       )
   }
+
+  const abrirModalEdit = (id) => {
+    setModalAberto(true);
+    setUrlId(id)
+  }
+
+  const abrirModalEditStatus = (id) => {
+    setModalStatusOpen(true)
+    setUrlId(id)
+  } 
 
   return (
     <>
@@ -142,8 +159,9 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
                   {task.descricao}
                 </td>
                 <td style={{ color: "#676a6c" }} className='p-2'>
-                  <FaEdit className='fs-5 text-primary' />
-                  <RiDeleteBin2Fill type="button" onClick={() => excluirTarefa(task.id)} className='fs-5 text-danger m-auto' />
+                  <FaEdit as="a" type="button" className='fs-5 text-primary' onClick={()=> abrirModalEdit(task.id)}  />
+                  <RiDeleteBin2Fill type="button" className='fs-5 text-danger m-auto' onClick={() => excluirTarefa(task.id)}  />
+                  <IoMdCheckmarkCircleOutline onClick={() => abrirModalEditStatus(task.id, task.status)} type="button" className="fs-5 text-success"  />
                 </td>
               </tr>
             ))}
@@ -154,10 +172,12 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
       {task.length > 0 && (
         <ContainerPagination>
           <PaginationSelector itensPerPage={itensPerPage} setItensPerPage={setItensPerPage} />
-          <Pagination pages={pages} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+          <Pagination pages={pages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
         </ContainerPagination>
       )}
 
+      <EditModal urlId={urlId} type="button" isOpen={modalAberto} onClose={() => setModalAberto(false)} />
+      <EditModalStatus urlId={urlId} type="button" isOpen={modalStatusOpen} onClose={() => setModalStatusOpen(false)} />
     </>
   )
 }

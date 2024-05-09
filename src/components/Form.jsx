@@ -1,13 +1,14 @@
 import { Separator, ContainerFormConsultar, ContainerButtonCadastrar, ContainerButtonConsultar } from "../styles"
 import { useState } from "react";
 import { getTarefas } from "../services/tarefas-services";
-import CustomModal from "./CustomModal";
+import CustomModal from "./CadastroModal";
 
 
 function Form({ setTaskCount, setTask, setTaskStatus, setValorInputInicio, setValorInputFim}) {
 
     const [dataInicio, setDataInicio] = useState('');
     const [dataFim, setDataFim] = useState('');
+    const [modalAberto, setModalAberto] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -23,9 +24,7 @@ function Form({ setTaskCount, setTask, setTaskStatus, setValorInputInicio, setVa
 
         }
     }
-
-    const [modalAberto, setModalAberto] = useState(false);
-
+    
     const abrirModal = () => {
         setModalAberto(true);
     }
@@ -56,7 +55,7 @@ function Form({ setTaskCount, setTask, setTaskStatus, setValorInputInicio, setVa
                     </div>
 
                     <ContainerButtonCadastrar>
-                        <button type="button" onClick={abrirModal}> Cadastrar</button>
+                        <button type="button" onClick={abrirModal}>Cadastrar</button>
                     </ContainerButtonCadastrar>
                     <CustomModal isOpen={modalAberto} onClose={() => setModalAberto(false)} />
 

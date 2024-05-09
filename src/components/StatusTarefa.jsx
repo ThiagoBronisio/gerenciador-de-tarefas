@@ -1,5 +1,5 @@
 import { ContainerStatusTarefa, StatusDanger, StatusPrimary, StatusSucess } from "../styles"
-import CustomModal from "./CustomModal";
+import CustomModal from "./CadastroModal";
 
 
 function StatusTarefa({ taskCount, taskStatus }) {
@@ -7,6 +7,11 @@ function StatusTarefa({ taskCount, taskStatus }) {
     const countActiveTasks = () => {
         const statusesArray = Object.values(taskStatus); // Converte os valores do objeto em um array
         return statusesArray.filter(status => status === 1).length;
+    };
+
+    const countInactiveTasks = () => {
+        const statusesArray = Object.values(taskStatus); // Converte os valores do objeto em um array
+        return statusesArray.filter(status => status === 2).length;
     };
 
     return (
@@ -22,7 +27,7 @@ function StatusTarefa({ taskCount, taskStatus }) {
 
             <StatusDanger>
                 <div>
-                    <span>0</span>
+                    <span>{countInactiveTasks()}</span>
                     <p>Tarefa inativa</p>
                 </div>
             </StatusDanger>

@@ -95,7 +95,7 @@ export default function CustomModal({ isOpen, onClose }) {
                             type="text" 
                             id="nome" 
                             name="nome" 
-                            placeholder="Nome completo" />
+                            placeholder="Nome da tarefa" />
                         <ErrorMessage name="nome" component="span" />
                     </ContainerInputModal>
 
