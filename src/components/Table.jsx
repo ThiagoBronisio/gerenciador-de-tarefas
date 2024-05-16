@@ -19,6 +19,7 @@ function Table({ task, setRefresh }) {
   const [modalAberto, setModalAberto] = useState(false);
   const [modalStatusOpen, setModalStatusOpen] = useState(false);
   const [urlId, setUrlId] = useState(null);
+  const [urlIdStatus, setUrlIdStatus] = useState(null)
 
   const pages = Math.ceil(task.length / itensPerPage);
   const startIndex = currentPage * itensPerPage;
@@ -86,7 +87,6 @@ function Table({ task, setRefresh }) {
       cancelButtonText: "Cancelar"
     }).then(result => {
       if (result.isConfirmed) {
-        setRefresh(true);
         deleteTarefa(id)
         Swal.fire({
           text: "Tarefa deletada com sucesso!",
@@ -94,7 +94,7 @@ function Table({ task, setRefresh }) {
           confirmButtonColor: "#0000FFB3",
           timer: 3000
         });
-        
+        setRefresh(true); 
       }
     })
       .catch((error) => {
@@ -120,13 +120,13 @@ function Table({ task, setRefresh }) {
   }
 
   const abrirModalEdit = (id) => {
-    setModalAberto(true);
     setUrlId(id)
+    setModalAberto(true);
   }
 
   const abrirModalEditStatus = (id) => {
+    setUrlIdStatus(id)
     setModalStatusOpen(true)
-    setUrlId(id)
   }
 
   return (
@@ -182,8 +182,19 @@ function Table({ task, setRefresh }) {
         </ContainerPagination>
       )}
 
-      <EditModal setRefresh={setRefresh} urlId={urlId} type="button" isOpen={modalAberto} onClose={() => setModalAberto(false)} />
-      <EditModalStatus setRefresh={setRefresh} urlId={urlId} type="button" isOpen={modalStatusOpen} onClose={() => setModalStatusOpen(false)} />
+      <EditModal type="button"
+        setRefresh={setRefresh} 
+        urlId={urlId} 
+        setUrlId={setUrlId}
+        isOpen={modalAberto} 
+        onClose={() => setModalAberto(false)} />
+      
+      <EditModalStatus type="button"
+        setRefresh={setRefresh} 
+        urlIdStatus={urlIdStatus} 
+        setUrlIdStatus={setUrlIdStatus} 
+        isOpen={modalStatusOpen} 
+        onClose={() => setModalStatusOpen(false)} />
     </>
   )
 }
