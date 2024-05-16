@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import EditModal from "./EditModal"
 import EditModalStatus from "./EditModalStatus";
@@ -9,10 +9,10 @@ import Pagination from "./Pagination"
 import PaginationSelector from "./PaginationSelector";
 import { ContainerPagination } from "../styles";
 import { format } from 'date-fns-tz';
-import { deleteTarefa, getTarefas } from "../services/tarefas-services";
+import { deleteTarefa } from "../services/tarefas-services";
 import Swal from "sweetalert2";
 
-function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, setTaskStatus }) {
+function Table({ task, setRefresh }) {
 
   const [currentPage, setCurrentPage] = useState(0)
   const [itensPerPage, setItensPerPage] = useState(10);
@@ -73,19 +73,6 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
     return format(dateTime, 'dd/MM/yyyy HH:mm', { timeZone: 'America/Sao_Paulo' });
   };
 
-  const fetchTarefa = async () => {
-    const response = await getTarefas(valorInputInicio, valorInputFim);
-    setTask(response)
-    setTaskCount(response.length)
-    const statusMap = response.map(tarefa => tarefa.status)
-    setTaskStatus(statusMap)
-  }
-
-  useEffect(() => {
-    if (task.length > 0) {
-      fetchTarefa()
-    }
-  }, [task])
 
   const excluirTarefa = (id) => {
     Swal.fire({
@@ -99,6 +86,7 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
       cancelButtonText: "Cancelar"
     }).then(result => {
       if (result.isConfirmed) {
+        setRefresh(true);
         deleteTarefa(id)
         Swal.fire({
           text: "Tarefa deletada com sucesso!",
@@ -106,13 +94,29 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
           confirmButtonColor: "#0000FFB3",
           timer: 3000
         });
+        
       }
     })
-      .catch(
-        e => {
-          console.log(e)
+      .catch((error) => {
+        let errorMessage = 'Erro desconhecido';
+        switch (error.response.status) {
+          case 400:
+            errorMessage = 'Erro, tente novamente mais tarde!';
+            break;
+          case 500:
+            errorMessage = 'Erro, tente novamente mais tarde!';
+            break;
+          default:
+            break;
         }
-      )
+        Swal.fire({
+          text: errorMessage,
+          icon: 'error',
+          timer: 3500,
+          confirmButtonColor: "#0000FFB3"
+        })
+
+      })
   }
 
   const abrirModalEdit = (id) => {
@@ -123,61 +127,63 @@ function Table({ task, setTask, valorInputInicio, valorInputFim, setTaskCount, s
   const abrirModalEditStatus = (id) => {
     setModalStatusOpen(true)
     setUrlId(id)
-  } 
+  }
 
   return (
     <>
-      <div className="table-responsive">
-        <table className="table table-sm table-striped table-bordered">
-          <thead>
-            <tr>
-              <th className="fw-normal" style={{ color: "#676a6c"}}>Nome da Tarefa</th>
-              <th className="fw-normal" style={{ color: "#676a6c" }}>Status</th>
-              <th className="fw-normal" style={{ color: "#676a6c" }}>Data e Hora</th>
-              <th className="fw-normal" style={{ color: "#676a6c" }}>Prioridade</th>
-              <th className="fw-normal" style={{ color: "#676a6c" }}>Descrição</th>
-              <th className="fw-normal" style={{ color: "#676a6c" }}></th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {task && currentItens.map(task => (
-              <tr key={task.id}>
-                <td style={{ color: "#676a6c" }} className='p-2'>
-                  {task.nome}
-                </td>
-                <td style={{ color: "#676a6c"}} className={`p-2 ${getClassForStatus(task.status)}`}>
-                  {descricaoStatus(task.status)}
-                </td>
-                <td style={{ color: "#676a6c" }} className='p-2'>
-                  {formatDateTime(task.dataHora)}
-                </td>
-                <td style={{ color: "#676a6c" }} className={`p-2 ${getClassForPriority(task.prioridade)}`}>
-                  {descricaoPrioridade(task.prioridade)}
-                </td>
-                <td style={{ color: "#676a6c" }} className='p-2'>
-                  {task.descricao}
-                </td>
-                <td style={{ color: "#676a6c" }} className='p-2'>
-                  <FaEdit as="a" type="button" className='fs-5 text-primary' onClick={()=> abrirModalEdit(task.id)}  />
-                  <RiDeleteBin2Fill type="button" className='fs-5 text-danger m-auto' onClick={() => excluirTarefa(task.id)}  />
-                  <IoMdCheckmarkCircleOutline onClick={() => abrirModalEditStatus(task.id, task.status)} type="button" className="fs-5 text-success"  />
-                </td>
+      {task.length > 0 && (
+        <div className="table-responsive">
+          <table className="table table-sm table-striped table-bordered">
+            <thead>
+              <tr>
+                <th className="fw-bold" style={{ color: "#676a6c" }}>Nome da Tarefa</th>
+                <th className="fw-bold" style={{ color: "#676a6c" }}>Status</th>
+                <th className="fw-bold" style={{ color: "#676a6c" }}>Data e Hora</th>
+                <th className="fw-bold" style={{ color: "#676a6c" }}>Prioridade</th>
+                <th className="fw-bold" style={{ color: "#676a6c" }}>Descrição</th>
+                <th className="fw-bold" style={{ color: "#676a6c" }}></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+
+            <tbody className="fade-in">
+              {task && currentItens.map(task => (
+                <tr key={task.id}>
+                  <td style={{ color: "#676a6c" }} className='p-2'>
+                    {task.nome}
+                  </td>
+                  <td style={{ color: "#676a6c" }} className={`p-2 ${getClassForStatus(task.status)}`}>
+                    {descricaoStatus(task.status)}
+                  </td>
+                  <td style={{ color: "#676a6c" }} className='p-2'>
+                    {formatDateTime(task.dataHora)}
+                  </td>
+                  <td style={{ color: "#676a6c" }} className={`p-2 ${getClassForPriority(task.prioridade)}`}>
+                    {descricaoPrioridade(task.prioridade)}
+                  </td>
+                  <td style={{ color: "#676a6c" }} className='p-2'>
+                    {task.descricao}
+                  </td>
+                  <td style={{ color: "#676a6c" }} className='p-2'>
+                    <FaEdit as="a" type="button" className='fs-5 text-primary' onClick={() => abrirModalEdit(task.id)} />
+                    <RiDeleteBin2Fill type="button" className='fs-5 text-danger m-auto' onClick={() => excluirTarefa(task.id)} />
+                    <IoMdCheckmarkCircleOutline onClick={() => abrirModalEditStatus(task.id, task.status)} type="button" className="fs-5 text-success" />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {task.length > 0 && (
-        <ContainerPagination>
+        <ContainerPagination className="fade-in">
           <PaginationSelector itensPerPage={itensPerPage} setItensPerPage={setItensPerPage} />
           <Pagination pages={pages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
         </ContainerPagination>
       )}
 
-      <EditModal urlId={urlId} type="button" isOpen={modalAberto} onClose={() => setModalAberto(false)} />
-      <EditModalStatus urlId={urlId} type="button" isOpen={modalStatusOpen} onClose={() => setModalStatusOpen(false)} />
+      <EditModal setRefresh={setRefresh} urlId={urlId} type="button" isOpen={modalAberto} onClose={() => setModalAberto(false)} />
+      <EditModalStatus setRefresh={setRefresh} urlId={urlId} type="button" isOpen={modalStatusOpen} onClose={() => setModalStatusOpen(false)} />
     </>
   )
 }

@@ -9,6 +9,10 @@ import { TitleModal, ContainerInputModal, ContainerSelectedModal, ButtonModal, S
 import { MdClose } from "react-icons/md";
 
 const customStyles = {
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        transition: 'opacity 0.3s ease',
+    },
     content: {
         top: '50%',
         left: '50%',
@@ -21,7 +25,8 @@ const customStyles = {
         width: '100%',
         borderRadius: '8px',
         borderColor: '#ced4da',
-    },
+        animation: 'fade-in 0.5s',
+    }
 };
 
 const validationSchema = Yup.object().shape({
@@ -31,7 +36,7 @@ const validationSchema = Yup.object().shape({
     prioridade: Yup.string().required('A prioridade da tarefa é obrigatória'),
 });
 
-export default function EditModal({ isOpen, onClose, urlId }) {
+export default function EditModal({ isOpen, onClose, urlId, setRefresh }) {
 
     const [previousUrlId, setPreviousUrlId] = useState('')
     const [formValues, setFormValues] = useState({
@@ -60,11 +65,18 @@ export default function EditModal({ isOpen, onClose, urlId }) {
                             prioridade: result.prioridade,
                             status: result.status
                         });
+                        setRefresh(true)
                     }
                 )
                 .catch(
                     e => {
                         console.log(e)
+                        Swal.fire({
+                            text: "Erro!",
+                            icon: 'erro',
+                            timer: 3500,
+                            confirmButtonColor: "#0000FFB3"
+                        })
                         }     
                 );   
     }
@@ -90,14 +102,32 @@ export default function EditModal({ isOpen, onClose, urlId }) {
                 obterTarefa(`/${urlId}`);
                 handleClose()
                 Swal.fire({
-                    text: `Párabens! Tarefa criada com sucesso!`,
+                    text: `Párabens! Tarefa atualizada com sucesso!`,
                     icon: 'success',
                     timer: 3500,
                     confirmButtonColor: "#0000FFB3",
-            })})
-            .catch(
-                e => console.log(e)
-            )
+            })
+            console.log(response)
+        })
+            .catch((error) => {
+                handleClose()
+                let errorMessage = 'Erro desconhecido';
+                switch (error.response.status) {
+                    case 400:
+                        errorMessage = 'O ID da tarefa é inválido.';
+                        break;
+                    case 500:
+                        errorMessage = 'Erro interno do servidor. Tente novamente mais tarde.';
+                        break;
+                    default:
+                        break;
+                }
+                Swal.fire({
+                text: errorMessage,
+                icon: 'error',
+                timer: 3500
+                }) 
+            })
     }
 
     return (

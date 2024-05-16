@@ -1,19 +1,31 @@
 import axios from "axios";
+import { format } from 'date-fns';
 
 export const url = () => {
     return "api/tarefas/"
 }
 
-export const getTarefas = async (dataInicio, dataFim) => {
-    try {
-        const response = await axios.get('api/tarefas/' + dataInicio + "/" + dataFim)
-        return response.data;
-    }
-    catch (error) {
-        console.log(error);
-        return null
-    }
+export const getTarefas = async (dataInicio, dataFim, nome) => {
+    const params = {
+        dataInicio: dataInicio ? format(dataInicio, 'yyyy-MM-dd\'T\'HH:mm:ss') : null,
+        dataFim: dataFim ? format(dataFim, 'yyyy-MM-dd\'T\'HH:mm:ss') : null,
+        nome: nome || ''
+    };
+    return axios.get("api/tarefas", {params})
+        .then(response => {
+            return response.data
+        })
 }
+
+
+export const getTarefaById = (id) => {
+    return axios.get(url() + "/" + id)
+        .then(
+            response => {
+                return response.data;
+            })
+}
+
 
 export const postTarefas = async (data) => {
     return axios.post(url(), data)
@@ -53,12 +65,4 @@ export const putTarefa = async (data) => {
         .then( response => {
             return response.data
         })
-}
-
-export const getTarefaById = (id) => {
-    return axios.get(url() + "/" + id)
-        .then(
-            response => {
-                return response.data;            }
-        )
 }

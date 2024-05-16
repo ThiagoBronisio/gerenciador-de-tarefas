@@ -1,12 +1,12 @@
-import { ContainerErrorPage, ContainerErrorPageImg, ContainerErrorPageMsg, ButtonErrorPage} from "../../styles"
+import { ContainerErrorPage, ContainerErrorPageImg, ContainerErrorPageMsg, ButtonErrorPage} from "./styles"
 import { Link } from "react-router-dom"
 import {ReactComponent as ImgError} from "../../img/svg/img-error.svg"
 
 function Error(){
     return(
-        <ContainerErrorPage>
+        <ContainerErrorPage className="fade-in">
             <ContainerErrorPageImg>
-                <ImgError />
+                <ImgError/>
             </ContainerErrorPageImg>
 
             <ContainerErrorPageMsg>
