@@ -33,8 +33,7 @@ const validationSchema = Yup.object().shape({
     status: Yup.string().required('O status da tarefa é obrigatório'),
 });
 
-
-export default function EditModalStatus({ isOpen, onClose, urlId, setRefresh }) {
+export default function EditModalStatus({ isOpen, onClose, urlIdStatus, setUrlIdStatus, setRefresh }) {
 
     const [formValues, setFormValues] = useState({
         id: '',
@@ -42,44 +41,39 @@ export default function EditModalStatus({ isOpen, onClose, urlId, setRefresh }) 
         descricao: '',
         dataHora: '',
         prioridade: '',
-        status: Number
+        status: ''
     });
 
     const handleClose = () => {
         onClose()
     }
 
-    const obterTarefa = (id) => {
-        getTarefaById(id)
-            .then(
-                result => {
-                    setFormValues({
-                        id: result.id,
-                        nome: result.nome,
-                        descricao: result.descricao,
-                        dataHora: result.dataHora,
-                        prioridade: result.prioridade,
-                        status: result.status
-                    });
-                    setRefresh(true)
-                }
-            )
-            .catch(
-                e => {
-                    console.log(e)
-                    Swal.fire({
-                        text: "Erro",
-                        icon: 'warning',
-                        timer: 3500,
-                        confirmButtonColor: "#0000FFB3"
-                    })
-                }
-            );
-    }
-
     useEffect(() => {
-        if (urlId && urlId !== "") {
-            obterTarefa(`${urlId}`);
+        if (isOpen === true) {
+            getTarefaById(urlIdStatus)
+                .then(
+                    result => {
+                        setFormValues({
+                            id: result.id,
+                            nome: result.nome,
+                            descricao: result.descricao,
+                            dataHora: result.dataHora,
+                            prioridade: result.prioridade,
+                            status: result.status
+                        });
+                    }
+                )
+                .catch(
+                    e => {
+                        console.log(e)
+                        Swal.fire({
+                            text: "Erro",
+                            icon: 'warning',
+                            timer: 3500,
+                            confirmButtonColor: "#0000FFB3"
+                        })
+                    }
+                );
         } else {
             setFormValues({
                 id: '',
@@ -90,19 +84,21 @@ export default function EditModalStatus({ isOpen, onClose, urlId, setRefresh }) 
                 status: ''
             });
         }
-    }, [urlId]);
+    }, [urlIdStatus, isOpen]);
 
     const onSubmit = (data) => {
         editarTarefa(data)
-            .then( response => {
-                obterTarefa(`/${urlId}`);
+            .then(response => {
+                setRefresh(true)
+                setUrlIdStatus(null)
                 handleClose()
                 Swal.fire({
-                    text: `Tarefa atualizada`,
+                    text: `Status atualizado`,
                     icon: 'success',
                     timer: 3500,
                     confirmButtonColor: "#0000FFB3",
-            })})
+                })
+            })
             .catch(
                 e => Swal.fire({
                     text: "Erro, não foi possivel atualizar o status da tarefa.",
@@ -141,8 +137,8 @@ export default function EditModalStatus({ isOpen, onClose, urlId, setRefresh }) 
                             id="status"
                             name="status">
                             <option value="">Selecione...</option>
-                            <option value="1">Tarefa ativa</option>
-                            <option value="2">Tarefa finalizada</option>
+                            <option value="1">Ativo</option>
+                            <option value="2">Finalizado</option>
                         </Field>
                         <ErrorMessage name="status" component="span" />
                     </ContainerSelectedModal>

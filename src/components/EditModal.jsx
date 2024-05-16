@@ -36,9 +36,8 @@ const validationSchema = Yup.object().shape({
     prioridade: Yup.string().required('A prioridade da tarefa é obrigatória'),
 });
 
-export default function EditModal({ isOpen, onClose, urlId, setRefresh }) {
+export default function EditModal({ isOpen, onClose, urlId, setUrlId, setRefresh }) {
 
-    const [previousUrlId, setPreviousUrlId] = useState('')
     const [formValues, setFormValues] = useState({
         id: '',
         nome: '',
@@ -53,8 +52,10 @@ export default function EditModal({ isOpen, onClose, urlId, setRefresh }) {
         onClose()
     }
 
-    const obterTarefa = (id) => {
-            getTarefaById(id)
+
+    useEffect(() => {
+        if (isOpen === true) {
+            getTarefaById(urlId)
                 .then(
                     result => {
                         setFormValues({
@@ -65,7 +66,6 @@ export default function EditModal({ isOpen, onClose, urlId, setRefresh }) {
                             prioridade: result.prioridade,
                             status: result.status
                         });
-                        setRefresh(true)
                     }
                 )
                 .catch(
@@ -73,42 +73,38 @@ export default function EditModal({ isOpen, onClose, urlId, setRefresh }) {
                         console.log(e)
                         Swal.fire({
                             text: "Erro!",
-                            icon: 'erro',
+                            icon: 'error',
                             timer: 3500,
                             confirmButtonColor: "#0000FFB3"
                         })
-                        }     
-                );   
-    }
-
-    useEffect(() => {
-        if (urlId && urlId !== previousUrlId) {
-            obterTarefa(`/${urlId}`);
-            setPreviousUrlId(urlId);
+                    }
+                );
         } else {
+            setUrlId(null)
             setFormValues({
                 id: '',
                 nome: '',
                 descricao: '',
                 dataHora: '',
-                prioridade: ''
+                prioridade: '',
+                status: ''
             });
         }
-    }, [urlId, previousUrlId]);
-    
+    }, [urlId, isOpen, setUrlId]);
+
     const onSubmit = (data) => {
         editarTarefa(data)
-            .then( response => {
-                obterTarefa(`/${urlId}`);
+            .then(response => {
+                setRefresh(true)
+                setUrlId(null)
                 handleClose()
                 Swal.fire({
                     text: `Párabens! Tarefa atualizada com sucesso!`,
                     icon: 'success',
                     timer: 3500,
                     confirmButtonColor: "#0000FFB3",
+                })
             })
-            console.log(response)
-        })
             .catch((error) => {
                 handleClose()
                 let errorMessage = 'Erro desconhecido';
@@ -123,92 +119,92 @@ export default function EditModal({ isOpen, onClose, urlId, setRefresh }) {
                         break;
                 }
                 Swal.fire({
-                text: errorMessage,
-                icon: 'error',
-                timer: 3500
-                }) 
+                    text: errorMessage,
+                    icon: 'error',
+                    timer: 3500
+                })
             })
     }
 
     return (
-        
-        
-           <Modal
-           style={customStyles}
-           isOpen={isOpen}
-           onRequestClose={handleClose}>
 
-           <ContainerTitleModal>
-               <TitleModal>Atualização de tarefa</TitleModal>
-               <MdClose type='button' onClick={handleClose} />
-           </ContainerTitleModal>
-           <SeparatorModal />
 
-           <Formik
-               initialValues={formValues}
-               validationSchema={validationSchema}
-               enableReinitialize={true}
-               onSubmit={onSubmit}>
+        <Modal
+            style={customStyles}
+            isOpen={isOpen}
+            onRequestClose={handleClose}>
 
-               <Form>
+            <ContainerTitleModal>
+                <TitleModal>Atualização de tarefa</TitleModal>
+                <MdClose type='button' onClick={handleClose} />
+            </ContainerTitleModal>
+            <SeparatorModal />
 
-                   <ContainerInputModal style={{display: 'none'}}>
-                       <label htmlFor="id">id</label>
-                       <Field 
-                           type="text" 
-                           id="id" 
-                           name="id" 
-                           placeholder="id completo"
-                           />
-                       <ErrorMessage name="id" component="span" />
-                   </ContainerInputModal>
+            <Formik
+                initialValues={formValues}
+                validationSchema={validationSchema}
+                enableReinitialize={true}
+                onSubmit={onSubmit}>
 
-                   <ContainerInputModal>
-                       <label htmlFor="nome">Nome:</label>
-                       <Field 
-                           type="text" 
-                           id="nome" 
-                           name="nome" 
-                           placeholder="Nome da tarefa"/>
-                       <ErrorMessage name="nome" component="span" />
-                   </ContainerInputModal>
+                <Form>
 
-                   <ContainerInputModal>
-                       <label htmlFor="descricao">Descrição:</label>
-                       <Field 
-                           type="text"
-                           as="textarea"
-                           id="descricao" 
-                           name="descricao" 
-                           placeholder="Descreva sobre a tarefa" />
-                       <ErrorMessage name="descricao" component="span" />
-                   </ContainerInputModal>
+                    <ContainerInputModal style={{ display: 'none' }}>
+                        <label htmlFor="id">id</label>
+                        <Field
+                            type="text"
+                            id="id"
+                            name="id"
+                            placeholder="id completo"
+                        />
+                        <ErrorMessage name="id" component="span" />
+                    </ContainerInputModal>
 
-                   <ContainerInputModal>
-                       <label htmlFor="dataHora">Data e Hora:</label>
-                       <Field 
-                           type="datetime-local" 
-                           id="dataHora" 
-                           name="dataHora"/>
-                       <ErrorMessage name="dataHora" component="span" />
-                   </ContainerInputModal>
+                    <ContainerInputModal>
+                        <label htmlFor="nome">Nome:</label>
+                        <Field
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            placeholder="Nome da tarefa" />
+                        <ErrorMessage name="nome" component="span" />
+                    </ContainerInputModal>
 
-                   <ContainerSelectedModal>
-                       <label htmlFor="prioridade">Prioridade:</label>
-                       <Field 
-                           as="select" 
-                           id="prioridade" 
-                           name="prioridade">
-                               <option value="">Selecione...</option>
-                               <option value="1">Alta</option>
-                               <option value="2">Média</option>
-                               <option value="3">Baixa</option>
-                       </Field>
-                       <ErrorMessage name="prioridade" component="span" />
-                   </ContainerSelectedModal>
-                   <ButtonModal type="submit">Salvar</ButtonModal>
-               </Form>
-           </Formik>
-       </Modal>
+                    <ContainerInputModal>
+                        <label htmlFor="descricao">Descrição:</label>
+                        <Field
+                            type="text"
+                            as="textarea"
+                            id="descricao"
+                            name="descricao"
+                            placeholder="Descreva sobre a tarefa" />
+                        <ErrorMessage name="descricao" component="span" />
+                    </ContainerInputModal>
+
+                    <ContainerInputModal>
+                        <label htmlFor="dataHora">Data e Hora:</label>
+                        <Field
+                            type="datetime-local"
+                            id="dataHora"
+                            name="dataHora" />
+                        <ErrorMessage name="dataHora" component="span" />
+                    </ContainerInputModal>
+
+                    <ContainerSelectedModal>
+                        <label htmlFor="prioridade">Prioridade:</label>
+                        <Field
+                            as="select"
+                            id="prioridade"
+                            name="prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="1">Alta</option>
+                            <option value="2">Média</option>
+                            <option value="3">Baixa</option>
+                        </Field>
+                        <ErrorMessage name="prioridade" component="span" />
+                    </ContainerSelectedModal>
+                    <ButtonModal type="submit">Salvar</ButtonModal>
+                </Form>
+            </Formik>
+        </Modal>
     )
 }
