@@ -1,12 +1,12 @@
 import React from "react"
-import { ContainerHomePage, ContainerHomePageTitle, ContainerHomePageList, ContainerHomePageButton } from "../../styles"
+import { ContainerHomePage, ContainerHomePageTitle, ContainerHomePageList, ContainerHomePageButton } from "./styles.jsx"
 import { GoChecklist } from "react-icons/go";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { Link } from "react-router-dom"
 
 function Home() {
     return (
-        <ContainerHomePage>
+        <ContainerHomePage className="fade-in">
             <ContainerHomePageTitle>
                 <div>
                     <h1>Gerenciador de Tarefas</h1>

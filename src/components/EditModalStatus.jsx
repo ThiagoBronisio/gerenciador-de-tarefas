@@ -9,6 +9,10 @@ import { TitleModal, ContainerSelectedModal, ButtonModal, SeparatorModal, Contai
 import { MdClose } from "react-icons/md";
 
 const customStyles = {
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        transition: 'opacity 0.3s ease',
+    },
     content: {
         top: '50%',
         left: '50%',
@@ -21,6 +25,7 @@ const customStyles = {
         width: '100%',
         borderRadius: '8px',
         borderColor: '#ced4da',
+        animation: 'fade-in 0.5s'
     },
 };
 
@@ -29,9 +34,8 @@ const validationSchema = Yup.object().shape({
 });
 
 
-export default function EditModalStatus({ isOpen, onClose, urlId }) {
+export default function EditModalStatus({ isOpen, onClose, urlId, setRefresh }) {
 
-    const [previousUrlId, setPreviousUrlId] = useState('')
     const [formValues, setFormValues] = useState({
         id: '',
         nome: '',
@@ -57,19 +61,25 @@ export default function EditModalStatus({ isOpen, onClose, urlId }) {
                         prioridade: result.prioridade,
                         status: result.status
                     });
+                    setRefresh(true)
                 }
             )
             .catch(
                 e => {
                     console.log(e)
+                    Swal.fire({
+                        text: "Erro",
+                        icon: 'warning',
+                        timer: 3500,
+                        confirmButtonColor: "#0000FFB3"
+                    })
                 }
             );
     }
 
     useEffect(() => {
-        if (urlId && urlId !== previousUrlId) {
+        if (urlId && urlId !== "") {
             obterTarefa(`${urlId}`);
-            setPreviousUrlId(urlId);
         } else {
             setFormValues({
                 id: '',
@@ -80,7 +90,7 @@ export default function EditModalStatus({ isOpen, onClose, urlId }) {
                 status: ''
             });
         }
-    }, [urlId, previousUrlId]);
+    }, [urlId]);
 
     const onSubmit = (data) => {
         editarTarefa(data)
@@ -94,9 +104,13 @@ export default function EditModalStatus({ isOpen, onClose, urlId }) {
                     confirmButtonColor: "#0000FFB3",
             })})
             .catch(
-                e => console.log(e)
+                e => Swal.fire({
+                    text: "Erro, não foi possivel atualizar o status da tarefa.",
+                    icon: 'error',
+                    timer: 3500,
+                    confirmButtonColor: "#0000FFB3"
+                })
             )
-            console.log(data)
     }
 
     return (
@@ -104,8 +118,7 @@ export default function EditModalStatus({ isOpen, onClose, urlId }) {
         <Modal
             style={customStyles}
             isOpen={isOpen}
-            onRequestClose={handleClose}
-            >
+            onRequestClose={handleClose}>
 
             <ContainerTitleModal>
                 <TitleModal>Selecione o status da tarefa</TitleModal>
