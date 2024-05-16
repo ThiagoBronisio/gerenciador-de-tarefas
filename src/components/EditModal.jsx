@@ -176,7 +176,8 @@ export default function EditModal({ isOpen, onClose, urlId, setRefresh }) {
                    <ContainerInputModal>
                        <label htmlFor="descricao">Descrição:</label>
                        <Field 
-                           type="text" 
+                           type="text"
+                           as="textarea"
                            id="descricao" 
                            name="descricao" 
                            placeholder="Descreva sobre a tarefa" />
